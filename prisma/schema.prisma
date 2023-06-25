@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model task {
+    id          Int @id @default(autoincrement())
+    title       String @db.VarChar(255) @unique
+    description String @db.VarChar(255)
+    done        Boolean @default(false)
+    createdAt   DateTime @db.DateTime @default(dbgenerated("NOW()"))
+    updatedAt   DateTime @db.DateTime @default(dbgenerated("NOW() ON UPDATE NOW()"))
+    @@index([id], name: "idx_id")
+    @@index([title], name: "idx_title")
+}
